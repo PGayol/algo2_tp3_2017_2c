@@ -5,13 +5,15 @@
 
 #include <limits>
 #include <algorithm>
+#include <map>
+#include <set>
 
 ///////////////////////////////////////////////////////////////////////////////
 /// EJERCICIO 1
 ////
 
 template <typename iterator, typename bucket>
-vector<bucket> generar_buckets(iterator input_begin, iterator input_end) 
+vector<bucket> generar_buckets(iterator input_begin, iterator input_end)
 {
     vector<bucket> bts;
     bts.resize(0);
@@ -78,12 +80,12 @@ int maximo(iterator desde, iterator hasta)
 }
 
 template <typename bucket>
-vector<typename bucket::value_type> aplanar_buckets(const std::vector<bucket> & B) 
+vector<typename bucket::value_type> aplanar_buckets(const std::vector<bucket> & B)
 {
 	vector< typename bucket::value_type > res;
 
 	for(int i = 0; i < B.size(); i++)
-	{	
+	{
 		auto it = B[i].begin();
 
 		while(it != B[i].end())
@@ -111,15 +113,16 @@ int anioMaximo(const fajo& falsos)
     return max;
 }
 
-fajo ordenar_por_probabilidad(const fajo& falsos_conocidos, const fajo & a_ordenar) 
+fajo ordenar_por_probabilidad(const fajo& falsos_conocidos, const fajo & a_ordenar)
 {
     auto anioMax = anioMaximo(falsos_conocidos);
 
-    vector<std::map<billete, int>> anios[anioMax];
+    vector<std::set<billete>> anios[anioMax];
 
-    for(int i; i < falsos_conocidos.size(); i++ )
+    for(int i = 0; i < falsos_conocidos.size(); i++ )
     {
-        anios[int(falsos_conocidos[i])].insert(std::pair<billete,int>(falsos_conocidos[i], 0));
+         std::set<billete> & actual = anios[int(falsos_conocidos[i])];
+        actual.insert(falsos_conocidos[i]);
     }
 
 }
