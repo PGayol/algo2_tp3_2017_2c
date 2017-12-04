@@ -119,12 +119,31 @@ fajo ordenar_por_probabilidad(const fajo& falsos_conocidos, const fajo & a_orden
 
     vector<std::set<billete>> anios[anioMax];
 
+    /*for(int i = 0; i < anioMax; i++)
+    {
+        anios[i] =
+
+    }*/
+
     for(int i = 0; i < falsos_conocidos.size(); i++ )
     {
-         std::set<billete> & actual = anios[int(falsos_conocidos[i])];
-        actual.insert(falsos_conocidos[i]);
+        auto a_insertar = falsos_conocidos[i];
+        auto & actual = anios[int(a_insertar)];
+        actual.insert(a_insertar);
     }
 
+    for( int j = 0; j < a_ordenar.size(); j++) //recorro el fajo a ordenar para setear su probabilidad de que sea falso
+    {
+        billete a_setear = a_ordenar[j]; // billete a buscar en el set para asignar probabalida
+
+        //std::set<billete>::iterator it;
+        //auto & a_buscar = anios[int(a_setear)];
+        auto it = anios[int(a_setear)].find(a_setear); // busco el billete en el año que fue creado find devuevle un it a la posicion del billete si no esta res end()
+
+        if(it != anios[int(a_setear)].end()) { // si no encuentro el billete le asigno su probabilidad de que sea falso
+            a_setear = billete(a_setear.numero_de_serie, it.size());//si no encuentro el billete en el set, su probabilidad de que sea falso es la cantidad de billetes falsos que el banco tiene en su listado para ese año
+        }
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
