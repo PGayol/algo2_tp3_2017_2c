@@ -106,7 +106,6 @@ struct billete {
 };
 typedef vector<billete> fajo;
 
-int anioMaximo(const fajo & falsos);
 
 /**
  * @brief ordenar_por_probabilidad ordena billetes según su probabilidad de ser falsos

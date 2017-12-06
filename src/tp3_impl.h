@@ -101,6 +101,7 @@ vector<typename bucket::value_type> aplanar_buckets(const std::vector<bucket> & 
 ///////////////////////////////////////////////////////////////////////////////
 /// EJERCICIO 2
 ////
+ inline int anioMaximo(const fajo & falsos);
 
 int anioMaximo(const fajo& falsos)
 {
@@ -117,7 +118,9 @@ fajo ordenar_por_probabilidad(const fajo& falsos_conocidos, const fajo & a_orden
 {
     auto anioMax = anioMaximo(falsos_conocidos);
 
-    vector<std::set<billete>> anios[anioMax];
+    fajo res = a_ordenar;
+
+    vector<std::set<billete> > anios(anioMax);
 
     /*for(int i = 0; i < anioMax; i++)
     {
@@ -127,23 +130,32 @@ fajo ordenar_por_probabilidad(const fajo& falsos_conocidos, const fajo & a_orden
 
     for(int i = 0; i < falsos_conocidos.size(); i++ )
     {
-        auto a_insertar = falsos_conocidos[i];
-        auto & actual = anios[int(a_insertar)];
-        actual.insert(a_insertar);
+        /*auto a_insertar = falsos_conocidos[i];
+        std::set<billete> actual = anios[int(a_insertar)];
+        actual.insert(actual.begin(), a_insertar);*/
+        auto aInsertar = falsos_conocidos[i];
+        anios[int(aInsertar)-1].insert(/*anios[int(aInsertar)].begin(),*/ aInsertar);
     }
 
-    for( int j = 0; j < a_ordenar.size(); j++) //recorro el fajo a ordenar para setear su probabilidad de que sea falso
+    for( int j = 0; j < res.size(); j++) //recorro el fajo a ordenar para setear su probabilidad de que sea falso
     {
-        billete a_setear = a_ordenar[j]; // billete a buscar en el set para asignar probabalida
+       // billete  &a_setear = res[j]; // billete a buscar en el set para asignar probabalida
 
         //std::set<billete>::iterator it;
         //auto & a_buscar = anios[int(a_setear)];
-        auto it = anios[int(a_setear)].find(a_setear); // busco el billete en el año que fue creado find devuevle un it a la posicion del billete si no esta res end()
+        //auto it = anios[int(res[j])-1].find(res[j]); // busco el billete en el año que fue creado find devuevle un it a la posicion del billete si no esta res end()
 
-        if(it != anios[int(a_setear)].end()) { // si no encuentro el billete le asigno su probabilidad de que sea falso
-            a_setear = billete(a_setear.numero_de_serie, it.size());//si no encuentro el billete en el set, su probabilidad de que sea falso es la cantidad de billetes falsos que el banco tiene en su listado para ese año
+        if(/*it != anios[int(res[j])-1].end()*/ anios[int(res[j])-1].count(res[j]) == 0) { // si no encuentro el billete le asigno su probabilidad de que sea falso
+            res[j].probabilidad_falso = anios[int(res[j])-1].size();//si no encuentro el billete en el set, su probabilidad de que sea falso es la cantidad de billetes falsos que el banco tiene en su listado para ese año
         }
+
     }
+
+    //bucket_sort_list(res.rbegin(), res.rend());
+    std::sort(res.begin(), res.end());
+    std::reverse(res.begin(), res.end());
+    return res;
+    //return std::reverse(res.begin(),res.end());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
